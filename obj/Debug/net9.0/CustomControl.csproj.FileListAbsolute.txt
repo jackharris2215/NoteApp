@@ -65,3 +65,4 @@ C:\Users\jackh\Projects\CustomControl\obj\Debug\net9.0\refint\Avalonia\CustomCon
 C:\Users\jackh\Projects\CustomControl\obj\Debug\net9.0\CustomCo.4F807967.Up2Date
 C:\Users\jackh\Projects\CustomControl\obj\Debug\net9.0\CustomControl.genruntimeconfig.cache
 C:\Users\jackh\Projects\CustomControl\obj\Debug\net9.0\ref\CustomControl.dll
+C:\Users\jackh\Projects\CustomControl\obj\Debug\net9.0\CustomControl.sourcelink.json

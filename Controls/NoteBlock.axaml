@@ -1,0 +1,38 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="using:CustomControl.ViewModels"
+        xmlns:c="using:CustomControl.Controls"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        x:Class="CustomControl.Controls.NoteBlock">
+
+    <StackPanel>
+        <Rectangle Width="400" Height="10" Fill="#F2D7EE" Opacity="0.9"/>
+        <TextBlock Width="400" Height="300" Background="#D3BCC0" Text="{Binding noteContent}"></TextBlock>
+    </StackPanel>
+    <!-- <TextBlock Width="400" Height="300" Background="Green" Text="{Binding noteContent}"></TextBlock> -->
+
+
+
+
+    <!-- <StackPanel Canvas.Left="20"
+                Canvas.Top="20">
+        <Rectangle Width="400" Height="10" Fill="White" Opacity="0.9" PointerPressed="pressed" PointerReleased="released"/>
+        <TextBox Width="400"
+                 Height="300"
+                 AcceptsReturn="True" 
+                 Watermark="Start typing..." 
+                 Foreground="Black" 
+                 FontSize="13" 
+                 BorderThickness="0">
+            <TextBox.Background>
+                <LinearGradientBrush>
+                    <GradientStop Color="#5bc3ff" Offset="0.0"/>
+                    <GradientStop Color="#3aa0ff" Offset="1.0"/>
+                </LinearGradientBrush>  
+            </TextBox.Background>
+        </TextBox>
+    </StackPanel> -->
+
+</UserControl>

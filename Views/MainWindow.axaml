@@ -16,5 +16,37 @@
         <vm:MainWindowViewModel/>
     </Design.DataContext>
     
-    <controls:CustomUserControl/>
+<Grid Name="main_container">
+    <Grid.Background>
+        <LinearGradientBrush>
+            <GradientStop Color="#A5668B" Offset="0.0"/>
+            <GradientStop Color="#69306D" Offset="0.5"/>
+            <GradientStop Color="#0E103D" Offset="1"/>
+        </LinearGradientBrush>  
+    </Grid.Background>
+    <Grid.RowDefinitions>
+        <RowDefinition Height="*"/>
+        <RowDefinition Height="*"/>
+        <RowDefinition Height="*"/>
+        <RowDefinition Height="*"/>
+        <RowDefinition Height="*"/>
+        <RowDefinition Height="*"/>
+    </Grid.RowDefinitions>
+    <Grid.ColumnDefinitions>
+        <ColumnDefinition Width="*"/>
+        <ColumnDefinition Width="*"/>
+        <ColumnDefinition Width="*"/>
+        <ColumnDefinition Width="*"/>
+        <ColumnDefinition Width="*"/>
+        <ColumnDefinition Width="*"/> 
+    </Grid.ColumnDefinitions>
+
+    <Rectangle Grid.Column="0" Grid.Row="0" Grid.RowSpan="6" Fill="#0E103D"/>
+    <Button Grid.Row="5" Grid.Column="0" Name="add_note" Content="Add Note" Background="BlueViolet" Margin="15" Click="addNoteHandler"/> 
+    <TextBlock Name="debugger" Grid.Column="0" Grid.Row="1" Foreground="AliceBlue" Margin="5" FontSize="20">Debugger</TextBlock>
+
+    <Canvas Name="canvas_container" Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="5" Grid.RowSpan="6" Margin="0">
+    </Canvas>
+
+</Grid>
 </Window>
