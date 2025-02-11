@@ -7,32 +7,19 @@
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
         x:Class="CustomControl.Controls.NoteBlock">
 
-    <StackPanel>
-        <Rectangle Width="400" Height="10" Fill="#F2D7EE" Opacity="0.9"/>
-        <TextBlock Width="400" Height="300" Background="#D3BCC0" Text="{Binding noteContent}"></TextBlock>
-    </StackPanel>
-    <!-- <TextBlock Width="400" Height="300" Background="Green" Text="{Binding noteContent}"></TextBlock> -->
-
-
-
-
-    <!-- <StackPanel Canvas.Left="20"
-                Canvas.Top="20">
-        <Rectangle Width="400" Height="10" Fill="White" Opacity="0.9" PointerPressed="pressed" PointerReleased="released"/>
-        <TextBox Width="400"
-                 Height="300"
-                 AcceptsReturn="True" 
-                 Watermark="Start typing..." 
-                 Foreground="Black" 
-                 FontSize="13" 
-                 BorderThickness="0">
+    <StackPanel Name="{Binding name}">
+        <StackPanel.Styles>
+            <Style Selector="StackPanel">
+                <Setter Property="Canvas.Left" Value="{Binding position[0]}"/>
+                <Setter Property="Canvas.Top" Value="{Binding position[1]}"/>
+            </Style>
+        </StackPanel.Styles>
+        <Rectangle Width="400" Height="10" Fill="#F2D7EE" Opacity="1" PointerPressed="OnPointerPressed" PointerReleased="OnPointerReleased"/>
+        <TextBox Width="400" Height="300" Background="#D3BCC0" FontSize="20" AcceptsTab="True" AcceptsReturn="True" Text="{Binding noteContent}" TextWrapping="Wrap" CornerRadius="0 0 5 5">
             <TextBox.Background>
-                <LinearGradientBrush>
-                    <GradientStop Color="#5bc3ff" Offset="0.0"/>
-                    <GradientStop Color="#3aa0ff" Offset="1.0"/>
-                </LinearGradientBrush>  
+                <SolidColorBrush Color="Azure" Opacity="0.5" />
             </TextBox.Background>
         </TextBox>
-    </StackPanel> -->
+    </StackPanel>
 
 </UserControl>

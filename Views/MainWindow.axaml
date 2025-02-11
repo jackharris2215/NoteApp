@@ -40,13 +40,15 @@
         <ColumnDefinition Width="*"/>
         <ColumnDefinition Width="*"/> 
     </Grid.ColumnDefinitions>
+    <Canvas Name="canvas_container" Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="5" Grid.RowSpan="6" Margin="0">
+        
+    </Canvas>
 
     <Rectangle Grid.Column="0" Grid.Row="0" Grid.RowSpan="6" Fill="#0E103D"/>
     <Button Grid.Row="5" Grid.Column="0" Name="add_note" Content="Add Note" Background="BlueViolet" Margin="15" Click="addNoteHandler"/> 
     <TextBlock Name="debugger" Grid.Column="0" Grid.Row="1" Foreground="AliceBlue" Margin="5" FontSize="20">Debugger</TextBlock>
 
-    <Canvas Name="canvas_container" Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="5" Grid.RowSpan="6" Margin="0">
-    </Canvas>
+    
 
 </Grid>
 </Window>

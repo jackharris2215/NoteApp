@@ -1,5 +1,6 @@
+using System;
+using Avalonia;
 using Avalonia.Controls;
-using Avalonia.Media;
 using Avalonia.Interactivity;
 using Avalonia.Styling;
 using Avalonia.Input;
@@ -12,7 +13,10 @@ public partial class MainWindow : Window
     {
         InitializeComponent();
         var noteBlock = new CustomControl.Controls.NoteBlock {
-            noteContent = "BAH"
+            name = "Note1",
+            window = this,
+            noteContent = "BAH",
+            position = new int[2] {50, 100}
         };
 
         Canvas main = canvas_container;
@@ -23,11 +27,11 @@ public partial class MainWindow : Window
 
     public void addNoteHandler(object sender, RoutedEventArgs e)
     {
-        // output.Text =
-        //   (output.Text == "AhA") ?
-        //    "aHa" : "AhA";
         var noteBlock = new CustomControl.Controls.NoteBlock {
-            noteContent = "Nah"
+            name = "Note2",
+            window = this,
+            noteContent = "Nah",
+            position = new int[2] {200, 140}
         };
         Canvas main = canvas_container;
         Canvas.SetLeft(noteBlock, 600);
