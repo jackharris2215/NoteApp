@@ -14,12 +14,16 @@
                 <Setter Property="Canvas.Top" Value="{Binding position[1]}"/>
             </Style>
         </StackPanel.Styles>
-        <Rectangle Width="400" Height="10" Fill="#F2D7EE" Opacity="1" PointerPressed="OnPointerPressed" PointerReleased="OnPointerReleased"/>
-        <TextBox Width="400" Height="300" Background="#D3BCC0" FontSize="20" AcceptsTab="True" AcceptsReturn="True" Text="{Binding noteContent}" TextWrapping="Wrap" CornerRadius="0 0 5 5">
+        <Rectangle Name="drag_rect_top" Width="{Binding size[0]}" Height="10" Fill="#F2D7EE" Opacity="1" PointerPressed="OnPointerPressed" PointerReleased="OnPointerReleased"/>
+        <TextBox Name="note_box" Width="{Binding size[0]}" Height="{Binding size[2]}" Background="#D3BCC0" FontSize="20" AcceptsTab="True" AcceptsReturn="True" Text="{Binding noteContent}" TextWrapping="Wrap" BorderThickness="0">
             <TextBox.Background>
                 <SolidColorBrush Color="Azure" Opacity="0.5" />
             </TextBox.Background>
         </TextBox>
+        <StackPanel Orientation="Horizontal">
+            <Rectangle Name="drag_rect_bottom" Width="{Binding size[3]}" Height="10" Fill="#F2D7EE" PointerPressed="OnPointerPressed" PointerReleased="OnPointerReleased"/>
+            <Rectangle Name="resize_rect" Width="10" Height="10" VerticalAlignment="Bottom" HorizontalAlignment="Right" Fill="Red" PointerPressed="OnPointerPressed" PointerReleased="OnPointerReleased"/>
+        </StackPanel>
     </StackPanel>
 
 </UserControl>
