@@ -7,22 +7,26 @@
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
         x:Class="CustomControl.Controls.NoteBlock">
 
-    <StackPanel Name="{Binding name}">
+    <StackPanel Name="{Binding name}" GotFocus="OnFocusHandler" LostFocus="OffFocusHandler" ZIndex="1">
         <StackPanel.Styles>
             <Style Selector="StackPanel">
                 <Setter Property="Canvas.Left" Value="{Binding position[0]}"/>
                 <Setter Property="Canvas.Top" Value="{Binding position[1]}"/>
             </Style>
         </StackPanel.Styles>
-        <Rectangle Name="drag_rect_top" Width="{Binding size[0]}" Height="10" Fill="#F2D7EE" Opacity="1" PointerPressed="OnPointerPressed" PointerReleased="OnPointerReleased"/>
-        <TextBox Name="note_box" Width="{Binding size[0]}" Height="{Binding size[2]}" Background="#D3BCC0" FontSize="20" AcceptsTab="True" AcceptsReturn="True" Text="{Binding noteContent}" TextWrapping="Wrap" BorderThickness="0">
+        <StackPanel Orientation="Horizontal">
+            <Rectangle Width="0" Height="10" />
+            <Rectangle Name="drag_rect_top" Width="{Binding size[3]}" Height="0" Fill="#71a049" Opacity="1" PointerPressed="OnPointerPressed" PointerReleased="OnPointerReleased" Focusable="True"/>
+            <Rectangle Name="delete_rect" Width="10" Height="0" Fill="Red" Opacity="1" PointerReleased="DeleteThis"/>
+        </StackPanel>
+        <TextBox Name="note_box" KeyDown="KeyStrokeHandler" Width="{Binding size[0]}" Height="{Binding size[2]}" Background="#D3BCC0" FontSize="20" AcceptsTab="True" AcceptsReturn="True" Text="{Binding noteContent}" TextWrapping="Wrap" BorderThickness="0" Foreground="White" CaretBrush="White" >
             <TextBox.Background>
-                <SolidColorBrush Color="Azure" Opacity="0.5" />
+                <SolidColorBrush Color="#121212" Opacity="0.5" />
             </TextBox.Background>
         </TextBox>
         <StackPanel Orientation="Horizontal">
-            <Rectangle Name="drag_rect_bottom" Width="{Binding size[3]}" Height="10" Fill="#F2D7EE" PointerPressed="OnPointerPressed" PointerReleased="OnPointerReleased"/>
-            <Rectangle Name="resize_rect" Width="10" Height="10" VerticalAlignment="Bottom" HorizontalAlignment="Right" Fill="Red" PointerPressed="OnPointerPressed" PointerReleased="OnPointerReleased"/>
+            <Rectangle Name="drag_rect_bottom" Width="{Binding size[3]}" Height="0" Fill="#71a049" PointerPressed="OnPointerPressed" PointerReleased="OnPointerReleased"/>
+            <Rectangle Name="resize_rect" Width="10" Height="0" VerticalAlignment="Bottom" HorizontalAlignment="Right" Fill="#458608" PointerPressed="OnPointerPressed" PointerReleased="OnPointerReleased" Focusable="True"/>
         </StackPanel>
     </StackPanel>
 

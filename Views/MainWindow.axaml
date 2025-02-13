@@ -8,7 +8,8 @@
         x:Class="CustomControl.Views.MainWindow"
         x:DataType="vm:MainWindowViewModel"
         Icon="/Assets/avalonia-logo.ico"
-        Title="CustomControl">
+        Title="CustomControl"
+        ExtendClientAreaToDecorationsHint="True">
     <Window.Styles>
         <Style Selector="TextBox:pointerover /template/ Border#border">
             <Setter Property="BorderThickness" Value="0" />
@@ -17,20 +18,19 @@
 
     <Design.DataContext>
         <!-- This only sets the DataContext for the previewer in an IDE,
-             to set the actual DataContext for runtime, set the DataContext property in code (look at App.axaml.cs) -->
+                to set the actual DataContext for runtime, set the DataContext property in code (look at App.axaml.cs) -->
         <vm:MainWindowViewModel/>
     </Design.DataContext>
     
-<Grid Name="main_container" PointerPressed="PointerPressedHandler" PointerReleased="PointerReleasedHandler" Background="#313338" Focusable="True">
-    <!-- <Grid.Background>
+<Grid Name="main_container" PointerPressed="PointerPressedHandler" PointerReleased="PointerReleasedHandler" Focusable="True">
+    <Grid.Background>
         <LinearGradientBrush>
-            <GradientStop Color="#A5668B" Offset="0.0"/>
-            <GradientStop Color="#69306D" Offset="0.5"/>
-            <GradientStop Color="#0E103D" Offset="1"/>
+            <GradientStop Color="#2d3229" Offset="0.0"/>
+            <GradientStop Color="#181d14" Offset="1.0"/>
         </LinearGradientBrush>  
-    </Grid.Background> -->
+    </Grid.Background>
     <Grid.RowDefinitions>
-        <RowDefinition Height="*"/>
+        <RowDefinition Height="35"/>
         <RowDefinition Height="*"/>
         <RowDefinition Height="*"/>
         <RowDefinition Height="*"/>
@@ -45,14 +45,17 @@
         <ColumnDefinition Width="*"/>
         <ColumnDefinition Width="*"/> 
     </Grid.ColumnDefinitions>
+    <Border Grid.Column="0" Grid.ColumnSpan="6" Grid.Row="0" Background="#121212" BorderThickness="0 0 0 2" BorderBrush="#aec895" PointerPressed="BeginWindowDrag"/>
+    <Rectangle Grid.Column="0" Grid.Row="1" Grid.RowSpan="5" Fill="#121212"/>
     <Canvas Name="canvas_container" 
-            Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="5" Grid.RowSpan="6" Margin="0">
+            Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="5" Grid.RowSpan="5" Margin="0">
+            <Rectangle Name="grid_center_object" Canvas.Left="0" Canvas.Top="0" Width="0" Height="0"/>
         
     </Canvas>
 
-    <Rectangle Grid.Column="0" Grid.Row="0" Grid.RowSpan="6" Fill="#0E103D"/>
-    <Button Grid.Row="5" Grid.Column="0" Name="add_note" Content="Add Note" Background="BlueViolet" Margin="15" Click="addNoteHandler"/> 
-    <TextBlock Name="debugger" Grid.Column="0" Grid.Row="0" Grid.RowSpan="5" Foreground="AliceBlue" Margin="5" FontSize="15" TextWrapping="Wrap" HorizontalAlignment="Stretch">Debugger</TextBlock>
+    
+    <Button Grid.Row="5" Grid.Column="0" Name="add_note" Content="Add Note" Background="#85ae62" Margin="15" Click="addNoteHandler" BorderThickness="0"/> 
+    <TextBlock Name="debugger" Grid.Column="0" Grid.Row="1" Grid.RowSpan="4" Foreground="AliceBlue" Margin="5" FontSize="15" TextWrapping="Wrap" HorizontalAlignment="Stretch">Debugger</TextBlock>
 
     
 
