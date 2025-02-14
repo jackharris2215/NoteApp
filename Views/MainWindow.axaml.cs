@@ -25,7 +25,7 @@ public partial class MainWindow : Window
     string current_notebook = "LameNoteBook";
     int NoteBlockID = 0;
 
-    bool dragging = false;
+    public bool dragging = false;
     // bool dragged = false;
     List<Avalonia.Point> offsets = new List<Avalonia.Point>();
     Avalonia.Point grid_center_point = new Avalonia.Point(0,0);
@@ -69,12 +69,14 @@ public partial class MainWindow : Window
         int height = Int32.Parse(parameters["height"]);
         int left = Int32.Parse(parameters["left"]);
         int top = Int32.Parse(parameters["top"]);
+        int font_size = Int32.Parse(parameters["fontSize"]);
+        string content = parameters["content"];
 
         var noteBlock = new NoteBlock {
             id = parameters["id"],
-            window = this,
             size = new int[4] {width, height, height-20, width-10},
-            noteContent = parameters["content"]
+            fontSize = font_size,
+            noteContent = content
         };
         Canvas main = canvas_container;
         Canvas.SetLeft(noteBlock, left);
@@ -144,10 +146,11 @@ public partial class MainWindow : Window
         Dictionary<string, string> new_note = new Dictionary<string, string>
         {
             { "id", name},
-            { "width", "300" },
+            { "width", "400" },
             { "height", "200" },
             { "left", "20" },
             { "top", "20" },
+            { "fontSize", "20"},
             { "content", "Note" }
         };
         // load note, increment note ID, and add name to notebook file

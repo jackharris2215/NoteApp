@@ -7,27 +7,59 @@
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
         x:Class="CustomControl.Controls.NoteBlock">
 
-    <StackPanel Name="{Binding name}" GotFocus="OnFocusHandler" LostFocus="OffFocusHandler" ZIndex="1">
-        <StackPanel.Styles>
-            <Style Selector="StackPanel">
+    <Panel Name="{Binding name}" GotFocus="OnFocusHandler" LostFocus="OffFocusHandler" ZIndex="1" Width="{Binding size[0]}" Height="{Binding size[1]}">
+    <Grid Name="main_grid" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"
+             RowDefinitions="10 * 10" ColumnDefinitions="*">
+        <Grid.Styles>
+            <Style Selector="Grid">
                 <Setter Property="Canvas.Left" Value="{Binding position[0]}"/>
                 <Setter Property="Canvas.Top" Value="{Binding position[1]}"/>
             </Style>
-        </StackPanel.Styles>
-        <StackPanel Orientation="Horizontal">
-            <Rectangle Width="0" Height="10" />
-            <Rectangle Name="drag_rect_top" Width="{Binding size[3]}" Height="0" Fill="#71a049" Opacity="1" PointerPressed="OnPointerPressed" PointerReleased="OnPointerReleased" Focusable="True"/>
-            <Rectangle Name="delete_rect" Width="10" Height="0" Fill="Red" Opacity="1" PointerReleased="DeleteThis"/>
-        </StackPanel>
-        <TextBox Name="note_box" KeyDown="KeyStrokeHandler" Width="{Binding size[0]}" Height="{Binding size[2]}" Background="#D3BCC0" FontSize="20" AcceptsTab="True" AcceptsReturn="True" Text="{Binding noteContent}" TextWrapping="Wrap" BorderThickness="0" Foreground="White" CaretBrush="White" >
+        </Grid.Styles>
+        <!-- top bar -->
+        <Grid Grid.Row="0" Height="10" Focusable="True"
+                ColumnDefinitions="* 10" RowDefinitions="10">
+            <Rectangle Name="drag_rect_top" Height="10" HorizontalAlignment="Stretch" Fill="#71a049" PointerPressed="OnPointerPressed" PointerReleased="OnPointerReleased" Focusable="True"/>
+            <Rectangle Name="delete_rect" Grid.Column="1" Width="10" Height="10" Fill="Red" Opacity="1" PointerReleased="DeleteThis" HorizontalAlignment="Right"/>
+        </Grid>
+
+        <!-- main text box -->
+        <TextBox Name="note_box" 
+                    Grid.Column="0" 
+                    Grid.Row="1" 
+                    VerticalAlignment="Stretch" 
+                    HorizontalAlignment="Stretch" 
+                    KeyDown="KeyStrokeHandler" 
+                    Background="#D3BCC0" 
+                    FontSize="{Binding fontSize}" 
+                    FontWeight="Normal"
+                    AcceptsTab="True" 
+                    AcceptsReturn="True" 
+                    Text="{Binding noteContent}" 
+                    TextWrapping="Wrap" 
+                    BorderThickness="0" 
+                    BorderBrush="AliceBlue"
+                    Foreground="White" 
+                    CaretBrush="White" >
             <TextBox.Background>
                 <SolidColorBrush Color="#121212" Opacity="0.5" />
             </TextBox.Background>
         </TextBox>
-        <StackPanel Orientation="Horizontal">
-            <Rectangle Name="drag_rect_bottom" Width="{Binding size[3]}" Height="0" Fill="#71a049" PointerPressed="OnPointerPressed" PointerReleased="OnPointerReleased"/>
-            <Rectangle Name="resize_rect" Width="10" Height="0" VerticalAlignment="Bottom" HorizontalAlignment="Right" Fill="#458608" PointerPressed="OnPointerPressed" PointerReleased="OnPointerReleased" Focusable="True"/>
-        </StackPanel>
-    </StackPanel>
+
+        <!-- bottom bar -->
+        <Grid Grid.Row="2" Height="10" Focusable="True"
+                ColumnDefinitions="* 10 10 10 10 10 10 10 10" RowDefinitions="10">
+            <Rectangle Name="drag_rect_bottom" Height="10" HorizontalAlignment="Stretch" Fill="#71a049" PointerPressed="OnPointerPressed" PointerReleased="OnPointerReleased" Focusable="True"/>
+            <Rectangle Name="bold_rect" Grid.Column="1" Height="10" Width="10" Fill="Brown" PointerPressed="OnPointerPressed" Focusable="True" Margin="1 0 0 0"/>
+            <Rectangle Name="font_up" Grid.Column="2" Height="10" Width="10" Fill="Pink" PointerPressed="OnPointerPressed" PointerReleased="OnPointerReleased" Focusable="True" Margin="1 0 0 0"/>
+            <Rectangle Name="font_down" Grid.Column="3" Height="10" Width="10" Fill="Purple" PointerPressed="OnPointerPressed" PointerReleased="OnPointerReleased" Focusable="True" Margin="1 0 0 0"/>
+            <Rectangle Name="border_rect_l" Grid.Column="4" Height="10" Width="10" Fill="Orange" PointerPressed="OnPointerPressed" PointerReleased="OnPointerReleased" Focusable="True" Margin="1 0 0 0"/>
+            <Rectangle Name="border_rect_t" Grid.Column="5" Height="10" Width="10" Fill="Orange" PointerPressed="OnPointerPressed" PointerReleased="OnPointerReleased" Focusable="True" Margin="1 0 0 0"/>
+            <Rectangle Name="border_rect_r" Grid.Column="6" Height="10" Width="10" Fill="Orange" PointerPressed="OnPointerPressed" PointerReleased="OnPointerReleased" Focusable="True" Margin="1 0 0 0"/>
+            <Rectangle Name="border_rect_b" Grid.Column="7" Height="10" Width="10" Fill="Orange" PointerPressed="OnPointerPressed" PointerReleased="OnPointerReleased" Focusable="True" Margin="1 0 0 0"/>
+            <Rectangle Name="resize_rect" Grid.Column="8" Width="10" Height="10" Fill="#458608" PointerPressed="OnPointerPressed" PointerReleased="OnPointerReleased" Focusable="True"/>
+        </Grid>
+    </Grid>
+    </Panel>
 
 </UserControl>
