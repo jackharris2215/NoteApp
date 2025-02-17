@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 
 using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Controls.Shapes;
 using Avalonia.Interactivity;
 using Avalonia.Styling;
 using Avalonia.Input;
@@ -24,6 +25,8 @@ public partial class MainWindow : Window
     string notes_dir = "NoteBooks";
     string current_notebook = "LameNoteBook";
     int NoteBlockID = 0;
+    double zoom = 1;
+    double[] new_spawn_coords = [10.0, 10.0];
 
     public bool dragging = false;
     // bool dragged = false;
@@ -36,104 +39,42 @@ public partial class MainWindow : Window
         // setup
         // Initialize window
         InitializeComponent();
-        // begin thread for saving notes
-        // Dispatcher.UIThread.Post(async () => await LongRunningTask(), DispatcherPriority.Background);
 
-        // find and read from notebook to be opened upon launch
-        string LaunchNoteBook = File.ReadAllLines(
-            Path.Combine(notes_dir, "launch_notebook.txt")
-        )[0];
-        
-        // loadNoteBook(LaunchNoteBook);
-        
+        // Dictionary<string, string> new_note = new Dictionary<string, string>
+        // {
+        //     { "id", "new_note_origin"},
+        //     { "width", "4" },
+        //     { "height", "4" },
+        //     { "left", "0" }, //(new_spawn_coords[0] + 200*(zoom-1)).ToString()
+        //     { "top",  "0" }, //(new_spawn_coords[1] + 200*(zoom-1)).ToString()
+        //     { "fontSize", "20"},
+        //     { "content", "" }
+        // };
+        // loadNote(new_note);
 
     }
-    // load each note from notebook and set ID to next avaliable number
-    // public void loadNoteBook(string LaunchNoteBook){
-    //     // find each note in a notebook
-    //     current_notebook = LaunchNoteBook;
-    //     string[] Notes = File.ReadAllLines(
-    //         Path.Combine(notes_dir, LaunchNoteBook)
-    //     );
-        
-    //     NoteBlockID = 0;
-    //     for(int i = 1; i<Notes.Length; i++){
-    //         string n = Notes[i];
-    //         loadNote(("NoteBooks/"+n).ParseNote());
-    //         NoteBlockID = Math.Max(NoteBlockID, n[n.Length-5]-'0');
-    //     }
-    //     NoteBlockID++;
-    // }
     public void loadNote(Dictionary<string, string> parameters){
         int width = Int32.Parse(parameters["width"]);
         int height = Int32.Parse(parameters["height"]);
-        int left = Int32.Parse(parameters["left"]);
-        int top = Int32.Parse(parameters["top"]);
+        double left = double.Parse(parameters["left"]);
+        double top = double.Parse(parameters["top"]);
         int font_size = Int32.Parse(parameters["fontSize"]);
         string content = parameters["content"];
 
         var noteBlock = new NoteBlock {
             id = parameters["id"],
-            size = new int[4] {width, height, height-20, width-10},
+            size = new int[2] {width, height},
             fontSize = font_size,
-            noteContent = content
+            noteContent = content,
+            window = this
         };
         Canvas main = canvas_container;
         Canvas.SetLeft(noteBlock, left);
         Canvas.SetTop(noteBlock, top);
-        main.Children.Add(noteBlock);
+        main.Children.Insert(0, noteBlock);
         notes.Add(noteBlock);
+        noteBlock.OnFocus();
     } 
-    // public void saveNote(NoteBlock note){
-    //     using (StreamWriter o = new StreamWriter(Path.Combine(notes_dir, note.id)))
-    //     {
-    //         o.WriteLine("id:"+note.id);
-    //         o.WriteLine("top:"+note.GetValue(Canvas.TopProperty));
-    //         o.WriteLine("left:"+note.GetValue(Canvas.LeftProperty));
-    //         o.WriteLine("width:"+note.size[0]);
-    //         o.WriteLine("height:"+note.size[1]);
-    //         o.WriteLine("---");
-    //         o.WriteLine(note.noteContent);
-    //     }
-    // }
-    // public void updateNotes(){
-    //     List<NoteBlock> temp = new List<NoteBlock>();
-    //     foreach(NoteBlock n in notes){
-    //         if(n.remove){
-    //             deleteNote(n);
-    //         }
-    //         else if(n.edited | dragged){
-    //             saveNote(n);
-    //             temp.Add(n);
-    //             n.edited = false;
-    //         }
-    //     }
-    //     notes = temp;
-    //     dragged = false;
-    // }
-    // public void deleteNote(NoteBlock note){
-    //     Canvas main = canvas_container;
-    //     main.Children.Remove(note);
-    //     File.Delete(Path.Combine(notes_dir, note.id));
-    //     updateNotebook();
-    // }
-    // public void updateNotebook(){
-    //     string coords = grid_center_object.GetValue(Canvas.LeftProperty).ToString()
-    //                         +","+
-    //                         grid_center_object.GetValue(Canvas.TopProperty).ToString();
-    //     using (StreamWriter o = new StreamWriter(Path.Combine(notes_dir, current_notebook))){
-    //         o.WriteLine(coords);
-    //         foreach(NoteBlock n in notes){
-    //             o.WriteLine(n.id);
-    //         }
-    //     }
-    // }
-    // async Task LongRunningTask(){
-    //     while(true){
-    //         await Task.Delay(1000);
-    //         updateNotes();
-    //     }
-    // }
 
     // add a new note
     public void addNoteHandler(object sender, RoutedEventArgs e){
@@ -143,29 +84,46 @@ public partial class MainWindow : Window
                           NoteBlockID.ToString() + 
                           ".txt";
         // create dictionary of default values
+        debugger.Text = (this.Width).ToString();
+        double origin_x = ((Math.Round(this.Width/20)*10)-400)+new_spawn_coords[0];
+        double origin_y = ((Math.Round(this.Height/20)*10)-200)+new_spawn_coords[1];
         Dictionary<string, string> new_note = new Dictionary<string, string>
         {
             { "id", name},
             { "width", "400" },
             { "height", "200" },
-            { "left", "20" },
-            { "top", "20" },
+            { "left", origin_x.ToString() }, //(new_spawn_coords[0] + 200*(zoom-1)).ToString()
+            { "top",  origin_y.ToString() }, //(new_spawn_coords[1] + 200*(zoom-1)).ToString()
             { "fontSize", "20"},
             { "content", "Note" }
         };
         // load note, increment note ID, and add name to notebook file
         loadNote(new_note);
         NoteBlockID++;
-        // File.AppendAllText(Path.Combine(notes_dir, current_notebook), name + Environment.NewLine);
         
+    }
+    protected override void OnPointerWheelChanged(PointerWheelEventArgs e){
+        switch(e.Delta.Y){
+            case(-1): zoom = Math.Max(0.5, Math.Round(zoom-0.1, 1)); break;
+            case(1): zoom = Math.Min(2, Math.Round(zoom+0.1, 1)); break;
+        }
+        canvas_container.RenderTransformOrigin = new RelativePoint((this.Width/2)-400, (this.Height/2)-200, RelativeUnit.Absolute);
+        canvas_container.RenderTransform = new ScaleTransform(){
+            ScaleX = zoom,
+            ScaleY = zoom
+        };
+        // debugger.Text = zoom.ToString();
     }
     // call whenever pointer is pressed and object has pressed event call
     public void PointerPressedHandler(object sender, PointerPressedEventArgs args){
+        if(args.GetCurrentPoint(this).Properties.IsRightButtonPressed){
+            debugger.Text = canvas_container.Children.ToString();
+        }
         if (!args.GetCurrentPoint(this).Properties.IsMiddleButtonPressed)
             return;
         dragging = true;
 
-        offsets.Add(args.GetCurrentPoint(grid_center_object).Position);
+        offsets.Add(args.GetCurrentPoint(new_note_spawn).Position);
         foreach (NoteBlock n in notes){
             offsets.Add(args.GetCurrentPoint(n).Position);
         }
@@ -181,16 +139,37 @@ public partial class MainWindow : Window
             return;
 
         Avalonia.Point pos = args.GetPosition(canvas_container) - offsets[0];
-        grid_center_object.SetValue(Canvas.LeftProperty, pos.X);
-        grid_center_object.SetValue(Canvas.TopProperty, pos.Y);
+        new_spawn_coords = [Math.Round((pos.X)%10), Math.Round((pos.Y)%10)];
+        new_note_spawn.SetValue(Canvas.LeftProperty, new_spawn_coords[0]+(300*(zoom-1)));
+        new_note_spawn.SetValue(Canvas.TopProperty, new_spawn_coords[1]+(300*(zoom-1)));
+        // debugger.Text = new_spawn_coords[0].ToString() + ", " + new_spawn_coords[1].ToString();
+
         for(int i = 0; i < notes.Count; i++){
             pos = args.GetPosition(canvas_container) - offsets[i+1];
-            notes[i].SetValue(Canvas.LeftProperty, pos.X);
-            notes[i].SetValue(Canvas.TopProperty, pos.Y);
+            notes[i].SetValue(Canvas.LeftProperty, Math.Round(pos.X));
+            notes[i].SetValue(Canvas.TopProperty, Math.Round(pos.Y));
         }
     }
     // built in for windows drag window
     public void BeginWindowDrag(object sender, PointerPressedEventArgs e){
         BeginMoveDrag(e);
+    }
+    public void ZoomIn(object sender, RoutedEventArgs args){
+        zoom = Math.Min(2, Math.Round(zoom+0.1, 1));
+
+        canvas_container.RenderTransformOrigin = new RelativePoint(this.Width/2, this.Height/2, RelativeUnit.Absolute);
+        canvas_container.RenderTransform = new ScaleTransform(){
+            ScaleX = zoom,
+            ScaleY = zoom
+        };
+    }
+    public void ZoomOut(object sender, RoutedEventArgs args){
+        zoom = Math.Max(0.5, Math.Round(zoom-0.1, 1));
+
+        canvas_container.RenderTransformOrigin = new RelativePoint(this.Width/2, this.Height/2, RelativeUnit.Absolute);
+        canvas_container.RenderTransform = new ScaleTransform(){
+            ScaleX = zoom,
+            ScaleY = zoom
+        };
     }
 }

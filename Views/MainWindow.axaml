@@ -27,26 +27,49 @@
     </Design.DataContext>
     
 
-<Grid Name="main_container" PointerPressed="PointerPressedHandler" PointerReleased="PointerReleasedHandler" Focusable="True" 
-        RowDefinitions="35 * * * * *" ColumnDefinitions="225 * * * * *">
+<Grid Name="main_container" Focusable="True" PointerPressed="PointerPressedHandler" PointerReleased="PointerReleasedHandler"
+        RowDefinitions="35 30 * * * * *" ColumnDefinitions="200 * * * * * 200">
     <Grid.Background>
         <LinearGradientBrush>
             <GradientStop Color="#2d3229" Offset="0.0"/>
             <GradientStop Color="#181d14" Offset="1.0"/>
         </LinearGradientBrush>  
     </Grid.Background>
-    <Border Grid.Column="0" Grid.ColumnSpan="6" Grid.Row="0" Background="#121212" BorderThickness="0 0 0 2" BorderBrush="#aec895" PointerPressed="BeginWindowDrag" ZIndex="3"/>
-    <Rectangle Grid.Column="0" Grid.Row="1" Grid.RowSpan="5" Fill="#121212" ZIndex="3"/>
-    
+    <Border Grid.Column="0" Grid.ColumnSpan="7" Grid.Row="0" Background="#121212" BorderThickness="0 0 0 2" BorderBrush="#aec895" PointerPressed="BeginWindowDrag" ZIndex="3"/>
+    <Border Grid.Column="0" Grid.Row="1" Grid.RowSpan="6" Background="#121212" ZIndex="3" BorderThickness="0 0 2 0" BorderBrush="#aec895"/>
+    <!-- right panel -->
+    <Border Grid.Column="6" Grid.Row="1" Grid.RowSpan="6" Background="#121212" ZIndex="3" BorderThickness="2 0 0 0" BorderBrush="#aec895"/>
+    <Border Grid.Column="1" Grid.Row="1" Grid.ColumnSpan="5" BorderBrush="#aec895" BorderThickness="0 0 0 2" ZIndex="4" IsHitTestVisible="False"/>
+    <!-- Tools bar -->
+    <Grid Grid.Column="1" Grid.Row="1" Grid.ColumnSpan="5" Background="#121212" ZIndex="3"
+        RowDefinitions="*" ColumnDefinitions="20 200 * 30 30 10">
+        <Button Grid.Column="1" Name="add_note" Content="" Background="#85ae62" Margin="3" Click="addNoteHandler" BorderThickness="0"/> 
+        <TextBlock Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="20" IsHitTestVisible="False" FontWeight="Bold"> Add Note </TextBlock>
+        <Button Grid.Column="3" Background="#85ae62" Margin="1 0 0 0" Content="+" Click="ZoomIn" />
+        <Button Grid.Column="4" Background="#85ae62" Margin="1 0 0 0" Content="-" Click="ZoomOut" />
+    </Grid>
 
-    <Canvas Name="canvas_container" Focusable="True"
-            Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="5" Grid.RowSpan="5" Margin="0">
-            <Rectangle Name="grid_center_object" Canvas.Left="0" Canvas.Top="0" Width="0" Height="0"/>
+
+    <Canvas Name="canvas_container" Focusable="True" Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="5" Grid.RowSpan="5"
+            Margin="0">
+            <Rectangle Name="new_note_spawn" Canvas.Left="0" Canvas.Top="0" Width="0" Height="0"/>
+
+            <Grid Canvas.Left="200" Canvas.Top="200"
+                    RowDefinitions="30 30" ColumnDefinitions="20 Auto">
+                <CheckBox Foreground="White" Grid.Column="0" Grid.Row="0" />
+                <TextBox MinWidth="30" Grid.Row="0" Grid.Column="1" ScrollViewer.VerticalScrollBarVisibility="Disabled"/>
+                <CheckBox Foreground="White" Grid.Column="0" Grid.Row="1" />
+                <TextBox MinWidth="30" VerticalAlignment="Stretch" Grid.Row="1" Grid.Column="1"/>
+            </Grid>
         
     </Canvas>
+
+    <StackPanel Margin="4" Grid.Column="6" Grid.Row="2" ZIndex="5">
+        <CheckBox Foreground="White">Not checked by default</CheckBox>
+        <CheckBox IsChecked="True" Foreground="White">Checked by default</CheckBox>
+    </StackPanel>
     
-    <Button Grid.Row="5" Grid.Column="0" Name="add_note" Content="Add Note" Background="#85ae62" Margin="15" Click="addNoteHandler" BorderThickness="0" ZIndex="4"/> 
-    <TextBlock Name="debugger" Grid.Column="0" Grid.Row="1" Grid.RowSpan="4" Foreground="AliceBlue" Margin="5" FontSize="15" TextWrapping="Wrap" HorizontalAlignment="Stretch" ZIndex="4">Debugger</TextBlock>
+    <TextBlock Name="debugger" Grid.Column="0" Grid.Row="2" Grid.RowSpan="4" Foreground="AliceBlue" Margin="5" FontSize="15" TextWrapping="Wrap" HorizontalAlignment="Stretch" ZIndex="4">Debugger</TextBlock>
 
     
 

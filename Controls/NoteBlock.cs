@@ -17,8 +17,6 @@ public partial class NoteBlock : UserControl
     public double grid_center_x = 0;
     public double grid_center_y = 0;
 
-    public Window? window = new Window();
-
     public List<Rectangle> rects = new List<Rectangle>();
     public int[] thicknesses = [0, 0, 0, 0];
     
@@ -34,6 +32,9 @@ public partial class NoteBlock : UserControl
 
     public static readonly StyledProperty<int[]> SizeProperty =
         AvaloniaProperty.Register<NoteBlock, int[]>(nameof(size));
+
+    public static readonly StyledProperty<Window> WindowProperty =
+        AvaloniaProperty.Register<NoteBlock, Window>(nameof(window));
 
     public static readonly StyledProperty<int> CustomFontSizeProperty =
         AvaloniaProperty.Register<NoteBlock, int>(nameof(fontSize));
@@ -51,6 +52,10 @@ public partial class NoteBlock : UserControl
         get => GetValue(SizeProperty);
         set => SetValue(SizeProperty, value);
     }
+    public Window window{
+        get => GetValue(WindowProperty);
+        set => SetValue(WindowProperty, value);
+    }
     public int fontSize{
         get => GetValue(CustomFontSizeProperty);
         set => SetValue(CustomFontSizeProperty, value);
@@ -59,9 +64,6 @@ public partial class NoteBlock : UserControl
     public NoteBlock(){
         InitializeComponent();
         DataContext=this;
-
-        window = TopLevel.GetTopLevel(this) as Window;
-        
 
         // Add all rectangles to list
         // font buttons
@@ -76,6 +78,9 @@ public partial class NoteBlock : UserControl
     
 
     public void OnFocusHandler(object sender, GotFocusEventArgs args){
+        OnFocus();
+    }
+    public void OnFocus(){
         foreach(Rectangle r in rects) r.Height = 10;
         this.ZIndex = 2;
     }
@@ -89,6 +94,7 @@ public partial class NoteBlock : UserControl
     }
 
     public void OnPointerPressed(object sender, PointerPressedEventArgs args){
+        
         if (!args.GetCurrentPoint(this).Properties.IsLeftButtonPressed)
             return;
         if (Parent == null)
@@ -120,13 +126,14 @@ public partial class NoteBlock : UserControl
             grid_center_y = (double)grid_center_object.GetValue(Canvas.TopProperty);
         }
 
+        Avalonia.Point position = args.GetCurrentPoint(this).Position;
+        x_offset = position.X;
+        y_offset = position.Y;
+
         // drag, resize
         switch(object_name){
             case "drag_rect_top":
                 isPressedDrag = true;
-                Avalonia.Point position = args.GetCurrentPoint(sender as Control).Position;
-                x_offset = position.X;
-                y_offset = position.Y;
                 edited = true;
                 break;
             case "resize_rect":
@@ -149,16 +156,6 @@ public partial class NoteBlock : UserControl
         if (Parent == null)
             return;
         
-        if(isPressedResize){
-            int w = (int)note_box.Width;
-            int h = (int)note_box.Height;
-
-            size[0] = w;
-            size[1] = h+20;
-            size[2] = h;
-            size[3] = w-10;
-        }
-        
         edited = true;
         isPressedDrag = false;
         isPressedResize = false;
@@ -168,34 +165,73 @@ public partial class NoteBlock : UserControl
         if (Parent == null)
             return;
         if (isPressedResize){
-            Avalonia.Point pos = args.GetPosition(this);
+            Avalonia.Point pos = args.GetPosition(resize_rect);
             double x_pos = (double)pos.X;
             double y_pos = (double)pos.Y;
-            if(x_pos >= 50 && (x_pos) % 10 == 0){
-                this.Width = x_pos;
-                // noteContent = TopLevel.GetTopLevel(this).ToString(); -- GET MAIN WINDOW
-                main_grid.Width = x_pos;
+            bool changed = false;
+
+            if(x_pos > 10) {
+                size[0]+=10;
+                changed = true;
+            }
+            
+            if(y_pos > 10) {
+                size[1]+=10; 
+                changed = true;
+            }
+            
+            if(x_pos < -10) {
+                size[0]-=10;
+                changed = true;
+            }
+            
+            if(y_pos < -10) {
+                size[1]-=10; 
+                changed = true;
+            }
+            
+            if(changed){
+                this.Width = size[0];
+                main_grid.Width = size[0];
                 main_grid.ColumnDefinitions.Clear();
                 main_grid.ColumnDefinitions.Add(new ColumnDefinition(GridLength.Star));
-            }
-            if(y_pos >= 50 && (y_pos) % 10 == 0){
-                this.Height = y_pos;
-                main_grid.Height = y_pos;
+                this.Height = size[1];
+                main_grid.Height = size[1];
                 main_grid.RowDefinitions.Clear();
                 main_grid.RowDefinitions.Add(new RowDefinition(new GridLength(10)));
                 main_grid.RowDefinitions.Add(new RowDefinition(GridLength.Star));
                 main_grid.RowDefinitions.Add(new RowDefinition(new GridLength(10)));
             }
+
             
         }
         if (isPressedDrag){  
-            double x_pos = (double)args.GetPosition((Visual)Parent).X-x_offset;
-            double y_pos = (double)args.GetPosition((Visual)Parent).Y-y_offset;
-            if(x_pos < ((Canvas)Parent).Bounds.Width-x_offset && x_pos > 0-x_offset && (x_pos-grid_center_x) % 10 == 0)
-                this.SetValue(Canvas.LeftProperty, x_pos);
+            Avalonia.Point pos = args.GetPosition(main_grid);
+            double x_pos = Math.Round((double)pos.X-x_offset);
+            double y_pos = Math.Round((double)pos.Y-y_offset);
 
-            if(y_pos < ((Canvas)Parent).Bounds.Height-y_offset && y_pos > 0-y_offset && (y_pos-grid_center_y) % 10 == 0)
-                this.SetValue(Canvas.TopProperty, y_pos); 
+            if(x_pos > 10)
+                this.SetValue(Canvas.LeftProperty, this.GetValue(Canvas.LeftProperty)+10);
+            if(x_pos < -10)
+                this.SetValue(Canvas.LeftProperty, this.GetValue(Canvas.LeftProperty)-10);
+            if(y_pos > 10)
+                this.SetValue(Canvas.TopProperty, this.GetValue(Canvas.TopProperty)+10);
+            if(y_pos < -10)
+                this.SetValue(Canvas.TopProperty, this.GetValue(Canvas.TopProperty)-10);
+            
+
+            // noteContent = x_pos.ToString() + ", " + y_pos.ToString()
+            //                 + "\n" + 
+            //                 args.GetPosition((Visual)Parent).ToString()
+            //                 + "\n" + 
+            //                 x_offset.ToString() + ", " + y_offset.ToString()
+            //                 + "\n" + 
+            //                 this.GetValue(Canvas.LeftProperty) + ", " + this.GetValue(Canvas.TopProperty)
+            //                 + "\n" + 
+            //                  ((Canvas)Parent).Bounds.Width.ToString() + ", " + ((Canvas)Parent).Bounds.Height.ToString();
+            // noteContent = this.GetValue(Canvas.LeftProperty).ToString() + ", " + this.GetValue(Canvas.TopProperty).ToString();
+
+
         }
     }
     public void DeleteThis(object sender, PointerReleasedEventArgs args){
