@@ -15,14 +15,15 @@ using Avalonia.Threading;
 
 using CustomControl.Controls;
 using CustomControl.Extensions;
+using CustomControl.Helpers;
 
 namespace CustomControl.Views;
 
 public partial class MainWindow : Window
 {
-    List<NoteBlock> notes = new List<NoteBlock>();
+    List<NoteBlock> blocks = new List<NoteBlock>();
     Dictionary<string, string> params_dict = new Dictionary<string, string>();
-    string notes_dir = "NoteBooks";
+    // string notes_dir = "NoteBooks";
     string current_notebook = "LameNoteBook";
     int NoteBlockID = 0;
     double zoom = 1;
@@ -72,7 +73,7 @@ public partial class MainWindow : Window
         Canvas.SetLeft(noteBlock, left);
         Canvas.SetTop(noteBlock, top);
         main.Children.Insert(0, noteBlock);
-        notes.Add(noteBlock);
+        blocks.Add(noteBlock);
         noteBlock.OnFocus();
     } 
 
@@ -124,7 +125,7 @@ public partial class MainWindow : Window
         dragging = true;
 
         offsets.Add(args.GetCurrentPoint(new_note_spawn).Position);
-        foreach (NoteBlock n in notes){
+        foreach (NoteBlock n in blocks){
             offsets.Add(args.GetCurrentPoint(n).Position);
         }
     }
@@ -144,10 +145,10 @@ public partial class MainWindow : Window
         new_note_spawn.SetValue(Canvas.TopProperty, new_spawn_coords[1]+(300*(zoom-1)));
         // debugger.Text = new_spawn_coords[0].ToString() + ", " + new_spawn_coords[1].ToString();
 
-        for(int i = 0; i < notes.Count; i++){
+        for(int i = 0; i < blocks.Count; i++){
             pos = args.GetPosition(canvas_container) - offsets[i+1];
-            notes[i].SetValue(Canvas.LeftProperty, Math.Round(pos.X));
-            notes[i].SetValue(Canvas.TopProperty, Math.Round(pos.Y));
+            blocks[i].SetValue(Canvas.LeftProperty, Math.Round(pos.X));
+            blocks[i].SetValue(Canvas.TopProperty, Math.Round(pos.Y));
         }
     }
     // built in for windows drag window
