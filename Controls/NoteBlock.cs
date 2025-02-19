@@ -19,6 +19,8 @@ public partial class NoteBlock : UserControl
     public double grid_center_y = 0;
 
     public List<Rectangle> rects = new List<Rectangle>();
+    public List<PathIcon> icons = new List<PathIcon>();
+
     public int[] thicknesses = [0, 0, 0, 0];
     
     public bool edited = true;
@@ -68,12 +70,12 @@ public partial class NoteBlock : UserControl
 
         // Add all rectangles to list
         // font buttons
-        rects.Add(bold_rect);
-        rects.Add(font_up); rects.Add(font_down); 
+        icons.Add(bold_rect);
+        icons.Add(font_up); icons.Add(font_down); 
         // border buttons
-        rects.Add(border_rect_l); rects.Add(border_rect_t); rects.Add(border_rect_r); rects.Add(border_rect_b);
+        icons.Add(border_rect_l); icons.Add(border_rect_t); icons.Add(border_rect_r); icons.Add(border_rect_b);
         // drag, resize, delete
-        rects.Add(drag_rect_top); rects.Add(delete_rect); rects.Add(drag_rect_bottom); rects.Add(resize_rect);
+        rects.Add(drag_rect_top); icons.Add(delete_rect); rects.Add(drag_rect_bottom); icons.Add(resize_rect);
 
     }
     
@@ -83,13 +85,14 @@ public partial class NoteBlock : UserControl
     }
     public void OnFocus(){
         foreach(Rectangle r in rects) r.Height = 10;
+        foreach(PathIcon r in icons) r.Height = 8;
         this.ZIndex = 2;
     }
     public void OffFocusHandler(object sender, RoutedEventArgs args){
         foreach(Rectangle r in rects) r.Height = 0;
+        foreach(PathIcon r in icons) r.Height = 0;
         this.ZIndex = 1;
     }
-
     public void KeyStrokeHandler(object sender, KeyEventArgs args){
         if(!edited) edited=true;
     }
@@ -105,25 +108,14 @@ public partial class NoteBlock : UserControl
         
         var object_name = (sender as Rectangle)?.Name;
         if (object_name == null)
+            object_name = (sender as PathIcon)?.Name;
+        if (object_name == null)
             return;
 
         // if border rect -> do border things
         if(object_name.StartsWith("border_rect")){
-            char[] sides = ['l', 't', 'r', 'b'];
-            int index = Array.IndexOf(sides, object_name[object_name.Length-1]);
-            bool on = thicknesses[index]==2;
-            thicknesses[index] = on?0:2;
-            var rectangle = sender as Rectangle;
-            if (rectangle != null)
-                rectangle.Fill = on ? Brushes.Orange : Brushes.Yellow;
+            thicknesses = ObjectTools.HandleBorder(object_name, sender, thicknesses);
             note_box.BorderThickness = new Thickness(thicknesses[0], thicknesses[1], thicknesses[2], thicknesses[3]);
-        }
-
-        // get relative grid center for dragging in grid
-        var grid_center_object = window?.FindControl<Rectangle>("grid_center_object");
-        if (grid_center_object != null){
-            grid_center_x = (double)grid_center_object.GetValue(Canvas.LeftProperty);
-            grid_center_y = (double)grid_center_object.GetValue(Canvas.TopProperty);
         }
 
         Avalonia.Point position = args.GetCurrentPoint(this).Position;

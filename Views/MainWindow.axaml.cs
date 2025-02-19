@@ -21,7 +21,9 @@ namespace CustomControl.Views;
 
 public partial class MainWindow : Window
 {
-    List<NoteBlock> blocks = new List<NoteBlock>();
+    List<UserControl> Blocks = new List<UserControl>();
+    // List<CheckBlock> checkBlocks = new List<CheckBlock>();
+
     Dictionary<string, string> params_dict = new Dictionary<string, string>();
     // string notes_dir = "NoteBooks";
     string current_notebook = "LameNoteBook";
@@ -40,21 +42,22 @@ public partial class MainWindow : Window
         // setup
         // Initialize window
         InitializeComponent();
+        this.AttachDevTools();
 
-        // Dictionary<string, string> new_note = new Dictionary<string, string>
-        // {
-        //     { "id", "new_note_origin"},
-        //     { "width", "4" },
-        //     { "height", "4" },
-        //     { "left", "0" }, //(new_spawn_coords[0] + 200*(zoom-1)).ToString()
-        //     { "top",  "0" }, //(new_spawn_coords[1] + 200*(zoom-1)).ToString()
-        //     { "fontSize", "20"},
-        //     { "content", "" }
-        // };
-        // loadNote(new_note);
+        Dictionary<string, string> new_note = new Dictionary<string, string>
+        {
+            { "id", "checkBlockTest"},
+            { "width", "300" },
+            { "height", "200" },
+            { "left", "20" }, //(new_spawn_coords[0] + 200*(zoom-1)).ToString()
+            { "top",  "20" }, //(new_spawn_coords[1] + 200*(zoom-1)).ToString()
+            { "fontSize", "20"},
+            { "content", "" }
+        };
+        loadBlock(new_note, "check");
 
     }
-    public void loadNote(Dictionary<string, string> parameters){
+    public void loadBlock(Dictionary<string, string> parameters, string blockType){
         int width = Int32.Parse(parameters["width"]);
         int height = Int32.Parse(parameters["height"]);
         double left = double.Parse(parameters["left"]);
@@ -62,23 +65,45 @@ public partial class MainWindow : Window
         int font_size = Int32.Parse(parameters["fontSize"]);
         string content = parameters["content"];
 
-        var noteBlock = new NoteBlock {
-            id = parameters["id"],
-            size = new int[2] {width, height},
-            fontSize = font_size,
-            noteContent = content,
-            window = this
-        };
+        UserControl? block = null;
+
+        switch(blockType){
+            case "note":
+                block = new NoteBlock {
+                    id = parameters["id"],
+                    size = new int[2] {width, height},
+                    fontSize = font_size,
+                    noteContent = content,
+                    window = this
+                };
+                break;
+            case "check":
+                block = new CheckBlock {
+                    id = parameters["id"],
+                    size = new int[2] {width, height},
+                    fontSize = font_size,
+                    blockContent = content,
+                    window = this
+                };
+                break;
+        }
+
+        if(block == null)
+            return;
+
         Canvas main = canvas_container;
-        Canvas.SetLeft(noteBlock, left);
-        Canvas.SetTop(noteBlock, top);
-        main.Children.Insert(0, noteBlock);
-        blocks.Add(noteBlock);
-        noteBlock.OnFocus();
+        Canvas.SetLeft(block, left);
+        Canvas.SetTop(block, top);
+        main.Children.Insert(0, block);
+        Blocks.Add(block);
+        (block as dynamic).OnFocus();
     } 
 
     // add a new note
     public void addNoteHandler(object sender, RoutedEventArgs e){
+        var object_name = (sender as Button)?.Name;
+        if (object_name == null)
+            return;
         // create name of note including file extension
         string name = current_notebook.Substring(0,current_notebook.Length-4).ToLower() + 
                           "note" + 
@@ -99,7 +124,15 @@ public partial class MainWindow : Window
             { "content", "Note" }
         };
         // load note, increment note ID, and add name to notebook file
-        loadNote(new_note);
+        switch(object_name){
+            case "add_check":
+                loadBlock(new_note, "check");
+                break;
+            case "add_note":
+                loadBlock(new_note, "note");
+                break;
+        }
+        
         NoteBlockID++;
         
     }
@@ -125,7 +158,7 @@ public partial class MainWindow : Window
         dragging = true;
 
         offsets.Add(args.GetCurrentPoint(new_note_spawn).Position);
-        foreach (NoteBlock n in blocks){
+        foreach (UserControl n in Blocks){
             offsets.Add(args.GetCurrentPoint(n).Position);
         }
     }
@@ -145,10 +178,10 @@ public partial class MainWindow : Window
         new_note_spawn.SetValue(Canvas.TopProperty, new_spawn_coords[1]+(300*(zoom-1)));
         // debugger.Text = new_spawn_coords[0].ToString() + ", " + new_spawn_coords[1].ToString();
 
-        for(int i = 0; i < blocks.Count; i++){
+        for(int i = 0; i < Blocks.Count; i++){
             pos = args.GetPosition(canvas_container) - offsets[i+1];
-            blocks[i].SetValue(Canvas.LeftProperty, Math.Round(pos.X));
-            blocks[i].SetValue(Canvas.TopProperty, Math.Round(pos.Y));
+            Blocks[i].SetValue(Canvas.LeftProperty, Math.Round(pos.X));
+            Blocks[i].SetValue(Canvas.TopProperty, Math.Round(pos.Y));
         }
     }
     // built in for windows drag window

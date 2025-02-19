@@ -12,11 +12,26 @@ namespace CustomControl.Helpers{
 
 public static class ObjectTools{
 
+    public static int[] HandleBorder(string object_name,
+                                    object sender, 
+                                    int[] thicknesses){
+
+        char[] sides = ['l', 't', 'r', 'b'];
+        int index = Array.IndexOf(sides, object_name[object_name.Length-1]);
+        bool on = thicknesses[index]==2;
+        thicknesses[index] = on?0:2;
+        var rectangle = sender as Rectangle;
+        if (rectangle != null)
+            rectangle.Fill = on ? Brushes.Orange : Brushes.Yellow;
+        return thicknesses;
+        
+    }
+
     public static void HandleResize(UserControl control, 
                                     Grid main_grid, 
                                     int[] size, 
                                     PointerEventArgs args,
-                                    Rectangle resize_rect){
+                                    PathIcon resize_rect){
 
         Avalonia.Point pos = args.GetPosition(resize_rect);
         double x_pos = (double)pos.X;
