@@ -15,13 +15,11 @@ public partial class NoteBlock : UserControl
 {
     public double x_offset = 0;
     public double y_offset = 0;
-    public double grid_center_x = 0;
-    public double grid_center_y = 0;
 
     public List<Rectangle> rects = new List<Rectangle>();
     public List<PathIcon> icons = new List<PathIcon>();
 
-    public int[] thicknesses = [0, 0, 0, 0];
+    // public int[] thicknesses = [0, 0, 0, 0];
     
     public bool edited = true;
     public bool isPressedDrag = false;
@@ -41,6 +39,15 @@ public partial class NoteBlock : UserControl
 
     public static readonly StyledProperty<int> CustomFontSizeProperty =
         AvaloniaProperty.Register<NoteBlock, int>(nameof(fontSize));
+
+    public static readonly StyledProperty<int[]> CustomBordersProperty =
+        AvaloniaProperty.Register<NoteBlock, int[]>(nameof(borders));
+
+    public static readonly StyledProperty<bool> IsBoldProperty =
+        AvaloniaProperty.Register<NoteBlock, bool>(nameof(bold));
+
+    public static readonly StyledProperty<NotePreview> PreviewProperty =
+        AvaloniaProperty.Register<NoteBlock, NotePreview>(nameof(fontSize));
 
     // id is also file name
     public string id{
@@ -63,6 +70,18 @@ public partial class NoteBlock : UserControl
         get => GetValue(CustomFontSizeProperty);
         set => SetValue(CustomFontSizeProperty, value);
     }
+    public int[] borders{
+        get => GetValue(CustomBordersProperty);
+        set => SetValue(CustomBordersProperty, value);
+    }
+    public bool bold{
+        get => GetValue(IsBoldProperty);
+        set => SetValue(IsBoldProperty, value);
+    }
+    public NotePreview preview{
+        get => GetValue(PreviewProperty);
+        set => SetValue(PreviewProperty, value);
+    }
     
     public NoteBlock(){
         InitializeComponent();
@@ -79,7 +98,12 @@ public partial class NoteBlock : UserControl
 
     }
     
-
+    public void refresh(){
+        // alternative to binding initial value
+        note_box.BorderThickness = new Thickness(borders[0], borders[1], borders[2], borders[3]);
+        var fontWeight = bold == true ? FontWeight.Bold : FontWeight.Normal;
+        note_box.FontWeight = fontWeight;
+    }
     public void OnFocusHandler(object sender, GotFocusEventArgs args){
         OnFocus();
     }
@@ -89,8 +113,12 @@ public partial class NoteBlock : UserControl
         this.ZIndex = 2;
     }
     public void OffFocusHandler(object sender, RoutedEventArgs args){
+        OffFocus();
+    }
+    public void OffFocus(){
         foreach(Rectangle r in rects) r.Height = 0;
         foreach(PathIcon r in icons) r.Height = 0;
+        preview.sub_heading.Text = noteContent.Length>10?noteContent.Substring(0, 10)+"...":noteContent;
         this.ZIndex = 1;
     }
     public void KeyStrokeHandler(object sender, KeyEventArgs args){
@@ -114,8 +142,8 @@ public partial class NoteBlock : UserControl
 
         // if border rect -> do border things
         if(object_name.StartsWith("border_rect")){
-            thicknesses = ObjectTools.HandleBorder(object_name, sender, thicknesses);
-            note_box.BorderThickness = new Thickness(thicknesses[0], thicknesses[1], thicknesses[2], thicknesses[3]);
+            borders = ObjectTools.HandleBorder(object_name, sender, borders);
+            note_box.BorderThickness = new Thickness(borders[0], borders[1], borders[2], borders[3]);
         }
 
         Avalonia.Point position = args.GetCurrentPoint(this).Position;
@@ -138,6 +166,7 @@ public partial class NoteBlock : UserControl
                 break;
             case "bold_rect":
                 var fontWeight = note_box.FontWeight == FontWeight.Bold ? FontWeight.Normal : FontWeight.Bold;
+                bold = bold == true ? false : true;
                 note_box.FontWeight = fontWeight;
                 break;
         }
@@ -164,7 +193,12 @@ public partial class NoteBlock : UserControl
         
     }
     public void DeleteThis(object sender, PointerReleasedEventArgs args){
-        if (Parent is Canvas canvas)
+        if (Parent is Canvas canvas){
             canvas.Children.Remove(this);
+        }
+        if (preview.Parent is StackPanel s){
+            s.Children.Remove(preview);
+        }
+
     }
 }

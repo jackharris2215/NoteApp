@@ -15,28 +15,24 @@
         <StreamGeometry x:Key="question_regular">M24 5.5C18.4796 5.5 14 9.97964 14 15.5C14 16.1904 14.5596 16.75 15.25 16.75C15.9404 16.75 16.5 16.1904 16.5 15.5C16.5 11.3604 19.8604 8 24 8C28.1396 8 31.5 11.3604 31.5 15.5C31.5 17.3754 31.0292 18.4403 30.3989 19.2446C29.889 19.8954 29.2935 20.3788 28.5509 20.9815C28.2472 21.2281 27.9187 21.4947 27.5615 21.8009C26.3916 22.8037 25.1534 24.0676 24.2301 26.0903C23.3147 28.0953 22.75 30.7533 22.75 34.5V34.75C22.75 35.4404 23.3096 36 24 36C24.6904 36 25.25 35.4404 25.25 34.75V34.5C25.25 30.9967 25.779 28.7172 26.5043 27.1285C27.2216 25.5574 28.1709 24.5713 29.1885 23.6991C29.4213 23.4995 29.6744 23.2943 29.9373 23.0811C30.7553 22.4179 31.669 21.6771 32.3667 20.7866C33.377 19.4972 34 17.8746 34 15.5C34 9.97964 29.5204 5.5 24 5.5Z M24 42C24.8284 42 25.5 41.3284 25.5 40.5C25.5 39.6716 24.8284 39 24 39C23.1716 39 22.5 39.6716 22.5 40.5C22.5 41.3284 23.1716 42 24 42Z</StreamGeometry>
         <StreamGeometry x:Key="info_regular">M14,2 C20.6274,2 26,7.37258 26,14 C26,20.6274 20.6274,26 14,26 C7.37258,26 2,20.6274 2,14 C2,7.37258 7.37258,2 14,2 Z M14,3.5 C8.20101,3.5 3.5,8.20101 3.5,14 C3.5,19.799 8.20101,24.5 14,24.5 C19.799,24.5 24.5,19.799 24.5,14 C24.5,8.20101 19.799,3.5 14,3.5 Z M14,11 C14.3796833,11 14.6934889,11.2821653 14.7431531,11.6482323 L14.75,11.75 L14.75,19.25 C14.75,19.6642 14.4142,20 14,20 C13.6203167,20 13.3065111,19.7178347 13.2568469,19.3517677 L13.25,19.25 L13.25,11.75 C13.25,11.3358 13.5858,11 14,11 Z M14,7 C14.5523,7 15,7.44772 15,8 C15,8.55228 14.5523,9 14,9 C13.4477,9 13,8.55228 13,8 C13,7.44772 13.4477,7 14,7 Z</StreamGeometry>
         <StreamGeometry x:Key="note_add_regular">M12 6.5C12 3.46243 9.53757 1 6.5 1C3.46243 1 1 3.46243 1 6.5C1 9.53757 3.46243 12 6.5 12C9.53757 12 12 9.53757 12 6.5ZM7.00065 7.00001L7.00111 9.50352C7.00111 9.77966 6.77725 10.0035 6.50111 10.0035C6.22497 10.0035 6.00111 9.77966 6.00111 9.50352L6.00065 7.00001H3.49609C3.21995 7.00001 2.99609 6.77615 2.99609 6.50001C2.99609 6.22387 3.21995 6.00001 3.49609 6.00001H6.00046L6 3.49927C6 3.22313 6.22386 2.99927 6.5 2.99927C6.77614 2.99927 7 3.22313 7 3.49927L7.00046 6.00001H9.50301C9.77915 6.00001 10.003 6.22387 10.003 6.50001C10.003 6.77615 9.77915 7.00001 9.50301 7.00001H7.00065Z M17.75 4.5H12.6865C12.5142 3.96653 12.2747 3.46321 11.9782 3H17.75C19.5449 3 21 4.45507 21 6.25V13.1287C21 13.7254 20.7629 14.2977 20.341 14.7197L14.7197 20.341C14.2977 20.7629 13.7254 21 13.1287 21H6.25C4.45507 21 3 19.5449 3 17.75V11.9782C3.46321 12.2747 3.96653 12.5142 4.5 12.6865V17.75C4.5 18.7165 5.2835 19.5 6.25 19.5H13V16.25C13 14.517 14.3565 13.1008 16.0656 13.0051L16.25 13H19.5V6.25C19.5 5.2835 18.7165 4.5 17.75 4.5ZM18.439 14.5H16.25C15.3318 14.5 14.5788 15.2071 14.5058 16.1065L14.5 16.25V18.439L18.439 14.5Z</StreamGeometry>
+        <StreamGeometry x:Key="delete_regular">M24,7.25 C27.1017853,7.25 29.629937,9.70601719 29.7458479,12.7794443 L29.75,13 L37,13 C37.6903559,13 38.25,13.5596441 38.25,14.25 C38.25,14.8972087 37.7581253,15.4295339 37.1278052,15.4935464 L37,15.5 L35.909,15.5 L34.2058308,38.0698451 C34.0385226,40.2866784 32.1910211,42 29.9678833,42 L18.0321167,42 C15.8089789,42 13.9614774,40.2866784 13.7941692,38.0698451 L12.09,15.5 L11,15.5 C10.3527913,15.5 9.8204661,15.0081253 9.75645361,14.3778052 L9.75,14.25 C9.75,13.6027913 10.2418747,13.0704661 10.8721948,13.0064536 L11,13 L18.25,13 C18.25,9.82436269 20.8243627,7.25 24,7.25 Z M33.4021054,15.5 L14.5978946,15.5 L16.2870795,37.8817009 C16.3559711,38.7945146 17.116707,39.5 18.0321167,39.5 L29.9678833,39.5 C30.883293,39.5 31.6440289,38.7945146 31.7129205,37.8817009 L33.4021054,15.5 Z M27.25,20.75 C27.8972087,20.75 28.4295339,21.2418747 28.4935464,21.8721948 L28.5,22 L28.5,33 C28.5,33.6903559 27.9403559,34.25 27.25,34.25 C26.6027913,34.25 26.0704661,33.7581253 26.0064536,33.1278052 L26,33 L26,22 C26,21.3096441 26.5596441,20.75 27.25,20.75 Z M20.75,20.75 C21.3972087,20.75 21.9295339,21.2418747 21.9935464,21.8721948 L22,22 L22,33 C22,33.6903559 21.4403559,34.25 20.75,34.25 C20.1027913,34.25 19.5704661,33.7581253 19.5064536,33.1278052 L19.5,33 L19.5,22 C19.5,21.3096441 20.0596441,20.75 20.75,20.75 Z M24,9.75 C22.2669685,9.75 20.8507541,11.1064548 20.7551448,12.8155761 L20.75,13 L27.25,13 C27.25,11.2050746 25.7949254,9.75 24,9.75 Z</StreamGeometry>
+        <StreamGeometry x:Key="select_all_regular">M20.4961766,5.62668182 C21.3720675,5.93447702 22,6.76890777 22,7.75 L22,17.75 C22,20.0972102 20.0972102,22 17.75,22 L7.75,22 C6.76890777,22 5.93447702,21.3720675 5.62668182,20.4961766 L7.72396188,20.4995565 L17.75,20.5 C19.2687831,20.5 20.5,19.2687831 20.5,17.75 L20.5,7.75 L20.4960194,7.69901943 L20.4961766,5.62668182 Z M17.246813,2 C18.4894537,2 19.496813,3.00735931 19.496813,4.25 L19.496813,17.246813 C19.496813,18.4894537 18.4894537,19.496813 17.246813,19.496813 L4.25,19.496813 C3.00735931,19.496813 2,18.4894537 2,17.246813 L2,4.25 C2,3.00735931 3.00735931,2 4.25,2 L17.246813,2 Z M17.246813,3.5 L4.25,3.5 C3.83578644,3.5 3.5,3.83578644 3.5,4.25 L3.5,17.246813 C3.5,17.6610266 3.83578644,17.996813 4.25,17.996813 L17.246813,17.996813 C17.6610266,17.996813 17.996813,17.6610266 17.996813,17.246813 L17.996813,4.25 C17.996813,3.83578644 17.6610266,3.5 17.246813,3.5 Z M9.58114564,11.3581942 L13.4696699,7.46966991 C13.7625631,7.1767767 14.2374369,7.1767767 14.5303301,7.46966991 C14.7965966,7.73593648 14.8208027,8.15260016 14.6029482,8.44621165 L14.5303301,8.53033009 L10.0303301,13.0303301 C9.73449239,13.3261678 9.26134027,13.3189471 8.97360394,13.0344464 L8.9,12.95 L7.4,10.95 C7.15147186,10.6186292 7.21862915,10.1485281 7.55,9.9 C7.85124623,9.67406533 8.26714548,9.7090277 8.52699676,9.96621555 L8.6,10.05 L9.58114564,11.3581942 L13.4696699,7.46966991 L9.58114564,11.3581942 Z</StreamGeometry>
+        <StreamGeometry x:Key="select_all_off_regular">M20.4961766,5.62668182 C21.3720675,5.93447702 22,6.76890777 22,7.75 L22,17.75 C22,20.0972102 20.0972102,22 17.75,22 L7.75,22 C6.76890777,22 5.93447702,21.3720675 5.62668182,20.4961766 L7.72396188,20.4995565 L17.75,20.5 C19.2687831,20.5 20.5,19.2687831 20.5,17.75 L20.5,7.75 L20.4960194,7.69901943 L20.4961766,5.62668182 Z M17.246813,2 C18.4894537,2 19.496813,3.00735931 19.496813,4.25 L19.496813,17.246813 C19.496813,18.4894537 18.4894537,19.496813 17.246813,19.496813 L4.25,19.496813 C3.00735931,19.496813 2,18.4894537 2,17.246813 L2,4.25 C2,3.00735931 3.00735931,2 4.25,2 L17.246813,2 Z M17.246813,3.5 L4.25,3.5 C3.83578644,3.5 3.5,3.83578644 3.5,4.25 L3.5,17.246813 C3.5,17.6610266 3.83578644,17.996813 4.25,17.996813 L17.246813,17.996813 C17.6610266,17.996813 17.996813,17.6610266 17.996813,17.246813 L17.996813,4.25 C17.996813,3.83578644 17.6610266,3.5 17.246813,3.5 Z</StreamGeometry>
 
         <StreamGeometry x:Key="zoom_in_regular">M10,2.75 C14.0041,2.75 17.25,5.99594 17.25,10 C17.25,11.7319 16.6427,13.3219 15.6295,14.5688 L20.5303,19.4697 C20.8232,19.7626 20.8232,20.2374 20.5303,20.5303 C20.2641,20.7966 19.8474,20.8208 19.5538,20.6029 L19.4697,20.5303 L14.5688,15.6295 C13.3219,16.6427 11.7319,17.25 10,17.25 C5.99593,17.25 2.75,14.0041 2.75,10 C2.75,5.99594 5.99593,2.75 10,2.75 Z M10,4.25 C6.82436,4.25 4.25,6.82436 4.25,10 C4.25,13.1756 6.82436,15.75 10,15.75 C13.1756,15.75 15.75,13.1756 15.75,10 C15.75,6.82436 13.1756,4.25 10,4.25 Z M10,6.5 C10.3796833,6.5 10.6934889,6.78215687 10.7431531,7.14823019 L10.75,7.25 L10.75,9.25 L12.75,9.25 C13.1642,9.25 13.5,9.58579 13.5,10 C13.5,10.3796833 13.2178347,10.6934889 12.8517677,10.7431531 L12.75,10.75 L10.75,10.75 L10.75,12.75 C10.75,13.1642 10.4142,13.5 10,13.5 C9.62029833,13.5 9.30650806,13.2178347 9.25684649,12.8517677 L9.25,12.75 L9.25,10.75 L7.25,10.75 C6.83578,10.75 6.5,10.4142 6.5,10 C6.5,9.6203075 6.78214847,9.30650958 7.14822809,9.25684668 L7.25,9.25 L9.25,9.25 L9.25,7.25 C9.25,6.83579 9.58578,6.5 10,6.5 Z</StreamGeometry>
     </Window.Resources>
     <Window.Styles>
         <Style Selector="TextBox:pointerover /template/ Border#border">
-            <!-- <Setter Property="BorderThickness" Value="{Binding}" /> -->
             <Setter Property="BorderBrush" Value="AliceBlue" />
         </Style>
         <Style Selector="TextBox:focus /template/ Border#border">
             <Setter Property="BorderBrush" Value="AliceBlue" />
         </Style>
     </Window.Styles>
-
-    <Design.DataContext>
-        <!-- This only sets the DataContext for the previewer in an IDE,
-                to set the actual DataContext for runtime, set the DataContext property in code (look at App.axaml.cs) -->
-        <vm:MainWindowViewModel/>
-    </Design.DataContext>
     
 
 <Grid Name="main_container" Focusable="True" PointerPressed="PointerPressedHandler" PointerReleased="PointerReleasedHandler"
-        RowDefinitions="35 30 * * * * *" ColumnDefinitions="200 * * * * * 200">
+        RowDefinitions="35 30 * * * * *" ColumnDefinitions="250 * * * * * 250">
     <Grid.Background>
         <LinearGradientBrush>
             <GradientStop Color="#2d3229" Offset="0.0"/>
@@ -47,14 +43,21 @@
     <Border Grid.Column="0" Grid.Row="1" Grid.RowSpan="6" Background="#121212" ZIndex="3" BorderThickness="0 0 2 0" BorderBrush="#aec895"/>
     <!-- right panel -->
     <Border Grid.Column="6" Grid.Row="1" Grid.RowSpan="6" Background="#121212" ZIndex="3" BorderThickness="2 0 0 0" BorderBrush="#aec895"/>
-    <Border Grid.Column="1" Grid.Row="1" Grid.ColumnSpan="5" BorderBrush="#aec895" BorderThickness="0 0 0 2" ZIndex="4" IsHitTestVisible="False"/>
+    <StackPanel Orientation="Horizontal" Grid.Row="1" Grid.Column="6" HorizontalAlignment="Stretch" ZIndex="5">
+        <PathIcon Name="trashcan" Data="{StaticResource delete_regular}" Width="20" Height="20"  Foreground="Red" Margin="20 0 0 0" PointerReleased="DeleteNotes" />
+        <PathIcon Name="select_all" Data="{StaticResource select_all_regular}" Width="15" Height="15"  Foreground="#aec895" Margin="10 0 0 0" VerticalAlignment="Bottom" PointerReleased="SelectAll"/>
+        <PathIcon Name="deselect_all" Data="{StaticResource select_all_off_regular}" Width="15" Height="15"  Foreground="#aec895" Margin="10 0 0 0" VerticalAlignment="Bottom" PointerReleased="DeselectAll"/>
+    </StackPanel>
+    <StackPanel Name="note_previews_container" Margin="4" Grid.Column="6" Grid.Row="2" ZIndex="5">
+        <!-- <controls:NotePreview/> -->
+    </StackPanel>
     <!-- Tools bar -->
+    <Border Grid.Column="1" Grid.Row="1" Grid.ColumnSpan="5" BorderBrush="#aec895" BorderThickness="0 0 0 2" ZIndex="4" IsHitTestVisible="False"/>
     <Grid Grid.Column="1" Grid.Row="1" Grid.ColumnSpan="5" Background="#121212" ZIndex="3"
         RowDefinitions="*" ColumnDefinitions="20 200 200 * 30 30 10">
         <Button Grid.Column="1" Name="add_note" Content="" Background="#85ae62" Margin="3" Click="addNoteHandler" BorderThickness="0"/> 
         <TextBlock Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="20" IsHitTestVisible="False" FontWeight="Bold"> Add Note </TextBlock>
-        <Button Grid.Column="2" Name="add_check" Content="" Background="#85ae62" Margin="3" Click="addNoteHandler" BorderThickness="0"/> 
-        <TextBlock Grid.Column="2" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="20" IsHitTestVisible="False" FontWeight="Bold"> Add List </TextBlock>
+        
         <Button Grid.Column="4" Background="#85ae62" Margin="1 0 0 0" Content="+" Click="ZoomIn" />
         <Button Grid.Column="5" Background="#85ae62" Margin="1 0 0 0" Content="-" Click="ZoomOut" />
     </Grid>
@@ -63,30 +66,10 @@
     <Canvas Name="canvas_container" Focusable="True" Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="5" Grid.RowSpan="5"
             Margin="0">
             <Rectangle Name="new_note_spawn" Canvas.Left="0" Canvas.Top="0" Width="0" Height="0"/>
-
-            <!-- <Grid Canvas.Left="200" Canvas.Top="200"
-                    RowDefinitions="30 30" ColumnDefinitions="20 Auto">
-                <CheckBox Foreground="White" Grid.Column="0" Grid.Row="0" />
-                <TextBox MinWidth="30" Grid.Row="0" Grid.Column="1" ScrollViewer.VerticalScrollBarVisibility="Disabled"/>
-                <CheckBox Foreground="White" Grid.Column="0" Grid.Row="1" />
-                <TextBox MinWidth="30" VerticalAlignment="Stretch" Grid.Row="1" Grid.Column="1"/>
-            </Grid> -->
-            <!-- <controls:CheckBlock Canvas.Left="200" Canvas.Top="100" />  -->
-
-            <!-- <PathIcon Height="200" Width="200" Foreground="Blue"             
-                Data="{StaticResource building_shop_regular}"/> -->
         
     </Canvas>
 
-    <StackPanel Margin="4" Grid.Column="6" Grid.Row="2" ZIndex="5">
-        <CheckBox Foreground="White">Not checked by default</CheckBox>
-        <CheckBox IsChecked="True" Foreground="White">Checked by default</CheckBox>
-    </StackPanel>
-    
     <TextBlock Name="debugger" Grid.Column="0" Grid.Row="2" Grid.RowSpan="4" Foreground="AliceBlue" Margin="5" FontSize="15" TextWrapping="Wrap" HorizontalAlignment="Stretch" ZIndex="4">Debugger</TextBlock>
-
-    
-
 </Grid>
 
 </Window>

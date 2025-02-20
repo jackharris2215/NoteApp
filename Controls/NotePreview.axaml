@@ -1,0 +1,22 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="using:CustomControl.ViewModels"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        x:Class="CustomControl.Controls.NotePreview"
+        x:DataType="vm:MainWindowViewModel">
+
+    <Border BorderBrush="White" BorderThickness="2 0 0 0" Margin="5" >
+    <Grid Name="main_grid" Height="40" VerticalAlignment="Stretch" Margin="5 0 0 0" PointerPressed="PointerPressedHandler" Focusable="True"
+            RowDefinitions="10 25" ColumnDefinitions="*">
+            <Grid.Background>
+                <SolidColorBrush Color="#D3D3D3" Opacity="0.0" />
+            </Grid.Background>
+
+        <TextBlock Name="heading" FontSize="10" Foreground="White" Grid.Row="0" VerticalAlignment="Stretch" FontStyle="Italic">Note</TextBlock>
+        <TextBlock Name="sub_heading" Text="{Binding content}" FontSize="25" Foreground="White" Grid.Row="1" VerticalAlignment="Stretch"></TextBlock>
+    </Grid>
+    </Border>
+
+</UserControl>

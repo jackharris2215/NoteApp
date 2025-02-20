@@ -54,7 +54,8 @@
                     BorderThickness="0" 
                     BorderBrush="AliceBlue"
                     Foreground="White" 
-                    CaretBrush="White" >
+                    CaretBrush="White" 
+                    ScrollViewer.VerticalScrollBarVisibility="Hidden">
             <TextBox.Background>
                 <SolidColorBrush Color="#121212" Opacity="0.5" />
             </TextBox.Background>

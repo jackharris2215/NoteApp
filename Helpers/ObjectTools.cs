@@ -8,7 +8,7 @@ using Avalonia.Media;
 using Avalonia.Interactivity;
 using Avalonia.Controls.Shapes;
 
-namespace CustomControl.Helpers{
+namespace CustomControl.Helpers;
 
 public static class ObjectTools{
 
@@ -48,7 +48,7 @@ public static class ObjectTools{
             changed = true;
         }
         
-        if(x_pos < -10 && size[0] > 100) {
+        if(x_pos < -10 && size[0] > 110) {
             size[0]-=10;
             changed = true;
         }
@@ -91,5 +91,4 @@ public static class ObjectTools{
         if(y_pos < -10)
             control.SetValue(Canvas.TopProperty, control.GetValue(Canvas.TopProperty)-10);
     }
-}
 }
