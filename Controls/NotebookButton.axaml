@@ -1,0 +1,20 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="using:CustomControl.ViewModels"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        x:Class="CustomControl.Controls.NotebookButton"
+        x:DataType="vm:MainWindowViewModel">
+    <Panel>
+    <StackPanel Name="main" Orientation="Horizontal" Margin="0 0 0 10" PointerPressed="OnPointerPressedHandler">
+        <StackPanel.Background>
+            <SolidColorBrush Color="Gray" Opacity="0.1" />
+        </StackPanel.Background>
+        <PathIcon Data="{StaticResource notebook_regular}" Width="20" Height="20" Foreground="White" Margin="20 5 0 5"/>
+        <TextBox Name="enter_box" HorizontalAlignment="Stretch" Margin="10 5 0 5" Width="150" KeyUp="KeyStrokeHandler" Watermark="New notebook name..." Text=""/>
+        <TextBlock Name="text_box" Width="0" FontSize="20" Foreground="White" Margin="10 5 0 5" Text="{Binding name}"></TextBlock>
+    </StackPanel>
+    </Panel>
+
+</UserControl>

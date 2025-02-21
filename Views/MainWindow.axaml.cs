@@ -2,6 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.IO; 
 using System.Threading;
+using System.Reactive.Linq;
+using System.Text;
 
 using Avalonia;
 using Avalonia.Controls;
@@ -11,6 +13,7 @@ using Avalonia.Styling;
 using Avalonia.Input;
 using Avalonia.Media;
 using Avalonia.Threading;
+using System.Threading.Tasks;
 using Avalonia.Controls.ApplicationLifetimes;
 
 using CustomControl.Controls;
@@ -23,78 +26,117 @@ public partial class MainWindow : Window
 {
     List<NoteBlock> Notes = new List<NoteBlock>();
     List<NotePreview> Previews = new List<NotePreview>();
+    List<NotebookButton> Notebooks = new List<NotebookButton>();
     // List<CheckBlock> checkBlocks = new List<CheckBlock>();
 
     Dictionary<string, string> params_dict = new Dictionary<string, string>();
     string NotesDir = "NoteBooks";
-    string current_notebook = "LameNoteBook.txt";
+    string current_notebook = "";
     int NoteBlockID = 0;
     double zoom = 1;
     double[] new_spawn_coords = [10.0, 10.0];
+    Avalonia.Point mouse_coords = new Avalonia.Point(0,0);
 
     public bool dragging = false;
     List<Avalonia.Point> offsets = new List<Avalonia.Point>();
-    Avalonia.Point grid_center_point = new Avalonia.Point(0,0);
 
     private Timer saveTimer;
 
     public MainWindow(){
         InitializeComponent();
-        loadNoteBook(current_notebook);
+        // loadNoteBook(current_notebook);
 
         saveTimer = new Timer(SaveCallback, null, 0, 1000);
-    }
-    private void SaveCallback(object? state)
-        {
-            Dispatcher.UIThread.InvokeAsync(() =>
-            {
-                SaveandLoad.SaveNoteBook(Notes, current_notebook, new_spawn_coords[0]+","+new_spawn_coords[1]);
+
+        string[] notebook_files = File.ReadAllText(System.IO.Path.Combine(NotesDir, "Notebooks.txt")).Split(
+            new string[] { Environment.NewLine },
+            StringSplitOptions.None
+        );
+
+        loadNoteBook(notebook_files[0]);
+        for(int n = 1; n<notebook_files.Length-1; n++){
+            string selected = notebook_files[0]==notebook_files[n]?"t":"f";
+            var notebook = new NotebookButton {
+                name = notebook_files[n].Substring(0, notebook_files[n].Length-4),
+                selected=selected
+            };
+            notebooks_container.Children.Add(notebook);
+            Notebooks.Add(notebook);
+            notebook.refresh();
+
+            var selected_note = notebook.GetObservable(NotebookButton.SelectedProperty);
+            selected_note.Subscribe(value => {
+                if(value=="t"){
+                    foreach(NotebookButton b in Notebooks){
+                        if(b != notebook)
+                            b.selected = "f";
+                            b.refresh();
+                    }    
+                    CleanCanvas();             
+                    loadNoteBook(notebook.name+".txt");
+                }
             });
         }
+    }
+    private void SaveCallback(object? state){
+        // debugger.Text = "saving: " + current_notebook;
+        Dispatcher.UIThread.InvokeAsync(() =>{
+            if(current_notebook != ".txt" && current_notebook != "")
+                SaveandLoad.SaveNoteBook(Notes, current_notebook, new_spawn_coords[0]+","+new_spawn_coords[1]);
+            using (StreamWriter outputFile = new StreamWriter(System.IO.Path.Combine(NotesDir, "Notebooks.txt"))){
+                outputFile.WriteLine(current_notebook);
+                foreach(NotebookButton n in Notebooks){
+                    outputFile.WriteLine(n.name+".txt");
+                }
+            }
+        });
+    }
+    
     public void loadNoteBook(string notebook){
+        if(notebook == "always_empty.txt"){
+            LoadEmpty();
+            return;
+        }
         current_notebook = notebook;
-        string contents = File.ReadAllText(System.IO.Path.Combine(NotesDir, notebook));
+        string notebook_file = System.IO.Path.Combine(NotesDir, notebook);
+        if(!File.Exists(notebook_file)){
+            // File.Create(notebook_file);
+            using (FileStream fs = File.Create(notebook_file))
+            {
+                byte[] bytes = Encoding.ASCII.GetBytes(new_spawn_coords[0].ToString() + "," + new_spawn_coords[1].ToString() + "\n");
+
+                // Add some information to the file.
+                fs.Write(bytes, 0, bytes.Length);
+            }
+            return;
+        }
+        string contents = File.ReadAllText(notebook_file);
         string[] note_strings = contents.Split("<END_OF_NOTE>");
-
-        // string[] lines = note_strings[0].Split(
-        //     new string[] { Environment.NewLine },
-        //     StringSplitOptions.None
-        // );
-
-        // Dictionary<string, string> new_note = new Dictionary<string, string>
-        // {
-        //     { "id", "testnote"},
-        //     { "width", "400" },
-        //     { "height", "200" },
-        //     { "left", "30" },
-        //     { "top",  "30" },
-        //     { "fontSize", "20"},
-        //     { "borders", "0,0,0,0" },
-        //     { "bold", "f" },
-        //     { "content",  lines[0]}
-        // };
-        // loadBlock(new_note, "note");
-        // Dictionary<string, string> new_note = SaveandLoad.LoadNote_FromString(note_strings[2]);
-
-        // loadBlock(new_note, "note");
-        
-        // string full = "";
-        // foreach (KeyValuePair<string, string> kvp in new_note)
-        // {
-        //     //textBox3.Text += ("Key = {0}, Value = {1}", kvp.Key, kvp.Value);
-        //     full += string.Format("Key = {0}, Value = {1}", kvp.Key, kvp.Value);
-        //     full += Environment.NewLine;
-        // }
-        // debugger.Text = full;
         for(int i = 0; i<note_strings.Length-1; i++){
             loadBlock(SaveandLoad.LoadNote_FromString(note_strings[i]), "note", false);
         }
-        // set new note spawn offset from file
-        debugger.Text = note_strings[note_strings.Length-1].Substring(0,note_strings[note_strings.Length-1].Length-2);
+        
         string[] grid_point = note_strings[note_strings.Length-1].Substring(0,note_strings[note_strings.Length-1].Length-2).Split(",");
         new_spawn_coords = [Int32.Parse(grid_point[0]),Int32.Parse(grid_point[1])];
         new_note_spawn.SetValue(Canvas.LeftProperty, new_spawn_coords[0]);
         new_note_spawn.SetValue(Canvas.TopProperty, new_spawn_coords[1]);
+    }
+    public void LoadEmpty(){
+        Dictionary<string, string> new_note = new Dictionary<string, string>
+        {
+            { "id", "empty"},
+            { "width", "400" },
+            { "height", "200" },
+            { "left", "0" }, //(new_spawn_coords[0] + 200*(zoom-1)).ToString()
+            { "top",  "0" }, //(new_spawn_coords[1] + 200*(zoom-1)).ToString()
+            { "fontSize", "20"},
+            { "borders", "0,0,0,0" },
+            { "bold", "t" },
+            { "content", "Empty Notebook... \n\n Please load a notebook or create a new one. \n\n Contents of this notebook will not be saved." }
+        };
+        // load note, increment note ID, and add name to notebook file
+        loadBlock(new_note, "note", true);
+
     }
     public void loadBlock(Dictionary<string, string> parameters, string blockType, bool focused){
         int width = Int32.Parse(parameters["width"]);
@@ -142,6 +184,54 @@ public partial class MainWindow : Window
             
     } 
 
+    // add notebook
+    public void addNotebookHandler(object sender, RoutedEventArgs e){
+
+        var notebook = new NotebookButton {
+            name = "",
+            selected="f"
+        };
+        notebooks_container.Children.Add(notebook);
+        Notebooks.Add(notebook);
+
+        // subscribe to click
+        var selected_note = notebook.GetObservable(NotebookButton.SelectedProperty);
+        selected_note.Subscribe(value => {
+                if(value=="t"){
+                    foreach(NotebookButton b in Notebooks){
+                        if(b != notebook)
+                            b.selected = "f";
+                            b.refresh();
+                    }    
+                    CleanCanvas();             
+                    loadNoteBook(notebook.name+".txt");
+                }
+            });
+    }
+    // delete notebook
+    public void deleteNotebookHandler(object sender, RoutedEventArgs e){
+        string to_delete = current_notebook;
+        CleanCanvas();
+        current_notebook = "always_empty.txt";
+        loadNoteBook(current_notebook);
+        for(int i = Notebooks.Count-1; i>=0; i--){
+            if(Notebooks[i].name+".txt" == to_delete){
+                notebooks_container.Children.Remove(Notebooks[i]);
+                Notebooks.RemoveAt(i);
+                File.Delete(System.IO.Path.Combine(NotesDir, to_delete));
+            }
+        }
+        // if(last_notebook != ""){
+        //     current_notebook = last_notebook;
+        //     loadNoteBook(current_notebook);
+        //     return;
+        // }
+        // if(Notebooks.Count >1){
+        //     current_notebook = Notebooks[1].name;
+        //     loadNoteBook(current_notebook);
+        //     return;
+        // }
+    }
     // add a new note
     public void addNoteHandler(object sender, RoutedEventArgs e){
         var object_name = (sender as Button)?.Name;
@@ -150,7 +240,7 @@ public partial class MainWindow : Window
         // create name of note including file extension
         string name = "note" + NoteBlockID.ToString();
         // create dictionary of default values
-        debugger.Text = (this.Width).ToString();
+        // debugger.Text = (this.Width).ToString();
         double origin_x = ((Math.Round(this.Width/20)*10)-400)+new_spawn_coords[0];
         double origin_y = ((Math.Round(this.Height/20)*10)-200)+new_spawn_coords[1];
         Dictionary<string, string> new_note = new Dictionary<string, string>
@@ -177,6 +267,8 @@ public partial class MainWindow : Window
         NoteBlockID++;
     }
     protected override void OnPointerWheelChanged(PointerWheelEventArgs e){
+        if(mouse_coords.X < 250 || mouse_coords.X > this.Width-250 || mouse_coords.Y < 65)
+            return;
         switch(e.Delta.Y){
             case(-1): zoom = Math.Max(0.5, Math.Round(zoom-0.1, 1)); break;
             case(1): zoom = Math.Min(2, Math.Round(zoom+0.1, 1)); break;
@@ -190,9 +282,8 @@ public partial class MainWindow : Window
     }
     // call whenever pointer is pressed and object has pressed event call
     public void PointerPressedHandler(object sender, PointerPressedEventArgs args){
-        if(args.GetCurrentPoint(this).Properties.IsRightButtonPressed){
-            debugger.Text = canvas_container.Children.ToString();
-        }
+        if(mouse_coords.X < 250 || mouse_coords.X > this.Width-250 || mouse_coords.Y < 65)
+            return;
         if (!args.GetCurrentPoint(this).Properties.IsMiddleButtonPressed)
             return;
         dragging = true;
@@ -209,6 +300,7 @@ public partial class MainWindow : Window
     }
     // call whenever pointer is moved
     protected override void OnPointerMoved(PointerEventArgs args){
+        mouse_coords = args.GetPosition(main_container);
         if(!dragging)
             return;
 
@@ -254,6 +346,15 @@ public partial class MainWindow : Window
                 Previews.RemoveAt(i);
                 Notes.RemoveAt(i);
             }
+        }
+    }
+    public void CleanCanvas(){
+        for(int i = Notes.Count-1; i>=0; i--){
+            note_previews_container.Children.Remove(Previews[i]);
+            canvas_container.Children.Remove(Notes[i]);
+            Previews.RemoveAt(i);
+            Notes.RemoveAt(i);
+            current_notebook = "";
         }
     }
     public void SelectAll(object sender, PointerReleasedEventArgs e){

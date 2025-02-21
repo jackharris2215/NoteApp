@@ -199,6 +199,5 @@ public partial class NoteBlock : UserControl
         if (preview.Parent is StackPanel s){
             s.Children.Remove(preview);
         }
-
     }
 }

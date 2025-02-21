@@ -8,8 +8,8 @@
         x:DataType="vm:MainWindowViewModel">
 
     <Border BorderBrush="White" BorderThickness="2 0 0 0" Margin="5" >
-    <Grid Name="main_grid" Height="40" VerticalAlignment="Stretch" Margin="5 0 0 0" PointerPressed="PointerPressedHandler" Focusable="True"
-            RowDefinitions="10 25" ColumnDefinitions="*">
+    <Grid Name="main_grid" Height="45" VerticalAlignment="Stretch" Margin="5 0 0 0" PointerPressed="PointerPressedHandler" Focusable="True"
+            RowDefinitions="10 30" ColumnDefinitions="*">
             <Grid.Background>
                 <SolidColorBrush Color="#D3D3D3" Opacity="0.0" />
             </Grid.Background>
